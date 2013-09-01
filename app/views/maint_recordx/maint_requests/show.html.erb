@@ -1,0 +1,74 @@
+<div id='main_body'>
+<%#= render inline: ERB.new(@erb_code).result(binding) %>
+<h4><%=t('Equipment Maintanence Request Info')%> </h4>
+
+<p>
+  <b><%=t('Equipment Name')%>:</b>
+  <%= @equipment.try(:name) %>
+</p>
+<p>
+  <b><%=t('Equipment Short Name')%>:</b>
+  <%= @equipment.try(:short_name) %>
+</p> 
+<p>
+  <b><%=t('Maintance Type') %>:</b>
+  <%= @maint_request.maint_type.name %>
+</p> 
+<p>
+  <b><%=t('Maint. Instruction')%>:</b>
+  <%= @maint_request.maint_instruction %>
+</p> 
+<p>
+  <b><%=t('Other Requirement')%>:</b>
+  <%= @maint_request.other_requirement %>
+</p> 
+<p>
+  <b><%=t('Execution Date')%>:</b>
+  <%= @maint_request.execution_date.strftime("%Y/%m/%d") %>
+</p> 
+<p>
+  <b><%=t('Estimated Execution Hour')%>:</b>
+  <%= @maint_request.estimated_execution_hour %>
+</p> 
+<p>
+  <b><%=t('Completed')%>:</b>
+  <%= @maint_request.completed ? t('Yes') : t('No') %>
+</p> 
+
+<p>
+  <b><%=t('Cancelled')%>:</b>
+  <%= @maint_request.cancelled ? t('Yes') : t('No') %>
+</p> 
+<p>
+  <b><%=t('Assignee')%>:</b>
+  <%= @maint_request.assigned_to.name if @maint_request.assigned_to_id.present? %>
+</p>
+<p>
+  <b><%=t('Requested By')%>:</b>
+  <%= @maint_request.requested_by.name %>
+</p>
+<p>
+  <b><%=t('Last Updated By')%>:</b>
+  <%= @maint_request.last_updated_by.name %>
+</p>
+<p>
+  <b>LOG：</b>
+  <% Commonx::Log.where('resource_id = ? AND resource_name = ?', @maint_request.id, params[:controller].sub('/', '_')).order("created_at DESC").each do |t| %>
+    <li><%= t.created_at.strftime("%Y/%m/%d") %>, &nbsp;<%= t.last_updated_by.name %>, &nbsp; <%= t.log %></li>
+  <% end %>
+</p>
+
+	<table class="table table-striped">
+	  <tr>
+	    <th>
+	    	<%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @maint_request.id, :resource_name => params[:controller], :subaction => 'maint_request',
+    	     :format => :js), :remote => true, :id => 'new_log_link' , :class => BUTTONS_CLS['action'] if has_action_right?('create_maint_request', 'commonx/logs') %>
+	    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	    	<%= link_to t('New Mint. Report'), new_maint_request_maint_report_path(@maint_request), :id => 'btn1_link',
+	    	               :class => BUTTONS_CLS['action'] if has_action_right?('create', 'maint_recordx/maint_reports') %>
+	    </th>
+	  </tr>
+	</table>
+
+	<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action']%>
+</div>

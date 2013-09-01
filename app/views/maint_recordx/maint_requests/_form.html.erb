@@ -1,0 +1,24 @@
+<%= simple_form_for(@maint_request) do |f| %>    
+  
+  <%#= render inline: ERB.new(@erb_code).result(binding) %>
+  <%= f.input :equipment_id, :readonly => true, :input_html => {:value => @equipment.id}, :as => :hidden %>
+  <%= f.input :equipment_name, :label => t('Equipment Name'), :readonly => true, :input_html => {:value => @equipment.try(:name)}%>
+  <%= f.input :equipment_short_name, :label => t('Equipment Short Name'), :readonly => true, :input_html => {:value => @equipment.try(:short_name)}%>
+  <% if readonly?(@maint_request, 'maint_type_id') %>
+    <%= f.input :maint_type_name, :label => t('Maintanence Type'), :readonly => true, :input_html => {:value => @maint_request.maint_type.name} %>
+  <% else %>
+    <%= f.input :maint_type_id, :label => t('Maintanence Type'), :collection => Commonx::MiscDefinition.where('for_which = ? AND active = ?', 'equip_maintanence_type', true), 
+              :label_method => :name, :value_method => :id  %>
+  <% end %>
+  <%= f.input :maint_instruction, :label => t('Maint. Instruction'), :input_html => {:rows => 4}, :readonly => readonly?(@maint_request, 'maint_instruction') %>
+  <%= f.input :other_requirement, :label => t('Other Requirement'), :input_html => {:rows => 4} %>
+  <%= f.input :execution_date, :label => t('Execution Date'), :as => :string %>
+  <%= f.input :estimated_execution_hour, :label => t('Estimated Execution Hour') %>
+  <%= f.input :cancelled, :label => t('Cancelled'),  :collection => [[t('Yes'), true], [t('No'), false]], :readonly => readonly?(@maint_request, 'cancelled') %>
+  <%= f.input :completed, :label => t('Completed'),  :collection => [[t('Yes'), true], [t('No'), false]], :readonly => readonly?(@maint_request, 'completed') %>
+  <%= f.input :assigned_to_id, :label => t('Assignee'), :collection => Authentify::UsersHelper::return_users('create', 'maint_recordx_maint_records'), :label_method => :name, :value_method => :id  %>
+  <%= f.input :requested_by_name, :label => t('Requested By'), :input_html => {:value => @maint_request.requested_by.name}, :readonly => true %>
+  <%= f.input :last_updated_by_name, :label => t('Last Updated By'), :input_html => {:value => @maint_request.last_updated_by.name}, :readonly => true %>
+    
+  <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
+<% end %> 

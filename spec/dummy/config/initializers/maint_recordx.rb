@@ -1,0 +1,1 @@
+MaintRecordx.equipment = 'MachineToolx::MachineTool'

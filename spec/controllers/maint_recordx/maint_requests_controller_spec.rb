@@ -23,7 +23,7 @@ module MaintRecordx
     render_views
     
     describe "GET 'index'" do
-      it "returns all reports" do
+      it "returns all requests" do
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource =>'maint_recordx_maint_requests', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "MaintRecordx::MaintRequest.where(:cancelled => false).order('execution_date DESC')")
         session[:user_id] = @u.id
@@ -34,6 +34,18 @@ module MaintRecordx
         assigns(:maint_requests).should =~ [sup, sup1]
       end
       
+      it "should return requests for the equipment" do
+        user_access = FactoryGirl.create(:user_access, :action => 'index', :resource =>'maint_recordx_maint_requests', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "MaintRecordx::MaintRequest.where(:cancelled => false).order('execution_date DESC')")
+        session[:user_id] = @u.id
+        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
+        equip = FactoryGirl.create(:machine_toolx_machine_tool)
+        equip1 = FactoryGirl.create(:machine_toolx_machine_tool, :short_name => 'new stuff', :serial_num => 'new serial')
+        sup = FactoryGirl.create(:maint_recordx_maint_request, :equipment_id => equip.id)
+        sup1 = FactoryGirl.create(:maint_recordx_maint_request, :execution_date => 1.day.ago, :equipment_id => equip1.id)
+        get 'index', {:use_route => :maint_recordx, :equipment_id => equip.id}
+        assigns(:maint_requests).should =~ [sup]
+      end
     end
   
     describe "GET 'new'" do

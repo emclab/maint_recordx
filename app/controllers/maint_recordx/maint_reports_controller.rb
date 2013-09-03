@@ -8,7 +8,7 @@ module MaintRecordx
     def index
       @title = t('Maintanence Reports')
       if @maint_request
-        @maint_reports = @maint_request.maint_reports.order('created_at DESC')
+        @maint_reports = MaintRecordx::MaintReport.where(:maint_request_id => @maint_request.id).page(params[:page]).per_page(@max_pagination)  #pagination error with @maint_request.maint_report
       else
         @maint_reports = params[:maint_recordx_maint_reports][:model_ar_r].page(params[:page]).per_page(@max_pagination)
       end
@@ -17,12 +17,12 @@ module MaintRecordx
   
     def new
       @title = t('New Maintanence Report')
-      @maint_report = MaintRecordx::MaintReport.new()
+      @maint_report = @maint_request.build_maint_report()
       @erb_code = find_config_const('maint_report_new_view', 'maint_recordx_maint_reports')
     end
   
     def create
-      @maint_report = MaintRecordx::MaintReport.new(params[:maint_report], :as => :role_new)
+      @maint_report = @maint_request.build_maint_report(params[:maint_report], :as => :role_new)
       @maint_report.last_updated_by_id = session[:user_id]
       @maint_report.reported_by_id = session[:user_id]
       if @maint_report.save
@@ -59,7 +59,7 @@ module MaintRecordx
     protected
     
     def load_maint_request
-      @maint_request = MaintRecordx.MaintRequest.find_by_id(params[:maint_request_id]) if params[:maint_request_id].present?
+      @maint_request = MaintRecordx::MaintRequest.find_by_id(params[:maint_request_id]) if params[:maint_request_id].present?
     end
   end
 end

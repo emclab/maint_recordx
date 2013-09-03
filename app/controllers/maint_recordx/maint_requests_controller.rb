@@ -10,7 +10,7 @@ module MaintRecordx
     def index
       @title = t('Maintanence Requests')
       if @equipment
-        @maint_requests = MaintRequest.where(:cancelled => false).where('equipment_id = ?', @equipment.id)
+        @maint_requests = MaintRequest.where(:cancelled => false).where('equipment_id = ?', @equipment.id).page(params[:page]).per_page(@max_pagination)
       else
         @maint_requests = params[:maint_recordx_maint_requests][:model_ar_r].page(params[:page]).per_page(@max_pagination)
       end

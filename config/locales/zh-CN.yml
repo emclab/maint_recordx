@@ -57,3 +57,6 @@ zh-CN:
   Spec  : '规格'
   Qty : '数量'
   Unit  : '单位'
+  Maint. Start Date : '维修开始时间'
+  Maint. Finish Date : '维修结束时间'
+  Report Date  : '报告日期'

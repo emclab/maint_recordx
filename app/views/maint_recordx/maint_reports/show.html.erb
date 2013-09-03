@@ -1,2 +1,58 @@
-<h1>MaintReports#show</h1>
-<p>Find me in app/views/maint_recordx/maint_reports/show.html.erb</p>
+<div id='main_body'>
+<%#= render inline: ERB.new(@erb_code).result(binding) %>
+<h4><%=t('Equipment Maintanence Request Info')%> </h4>
+
+<p>
+  <b><%=t('Equipment Name')%>:</b>
+  <%= @maint_report.maint_request.equipment.try(:name) %>
+</p>
+<p>
+  <b><%=t('Equipment Short Name')%>:</b>
+  <%= @maint_report.maint_request.equipment.try(:short_name) %>
+</p> 
+<p>
+  <b><%=t('Maintance Type') %>:</b>
+  <%= @maint_report.maint_request.maint_type.name %>
+</p> 
+<p>
+  <b><%=t('Problem Description')%>:</b>
+  <%= @maint_report.problem %>
+</p> 
+<p>
+  <b><%=t('Maintanence Work')%>:</b>
+  <%= @maint_report.did %>
+</p> 
+<p>
+  <b><%=t('Maint. Start Date')%>:</b>
+  <%= @maint_report.start_datetime.strftime("%Y/%m/%d/%l/%M/%p") %>
+</p> 
+<p>
+  <b><%=t('Maint. Finish Date')%>:</b>
+  <%= @maint_report.finish_datetime.strftime("%Y/%m/%d/%l/%M/%p") %>
+</p>
+<p>
+  <b><%=t('Machine Down?')%>:</b>
+  <%= @maint_report.machine_down ? t('Yes') : t('No') %>
+</p>  
+<p>
+  <b><%=t('Review')%>:</b>
+  <%= @maint_report.review %>
+</p> 
+
+<p>
+  <b><%=t('Reported By')%>:</b>
+  <%= @maint_report.reported_by.name if @maint_report.reported_by_id.present? %>
+</p>
+<p>
+  <b><%=t('Last Updated By')%>:</b>
+  <%= @maint_report.last_updated_by.name %>
+</p>
+	<table class="table table-striped">
+	  <tr>
+	    <th>
+	    	<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action']%>
+	    </th>
+	  </tr>
+	</table>
+	
+</div>

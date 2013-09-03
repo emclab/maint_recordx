@@ -12,6 +12,7 @@ module MaintRecordx
     belongs_to :maint_type, :class_name => 'Commonx::MiscDefinition' 
     belongs_to :assigned_to, :class_name => 'Authentify::User'
     belongs_to :requested_by, :class_name => 'Authentify::User' 
+    has_one :maint_report, :class_name => 'MaintRecordx::MaintReport'
     belongs_to :equipment, :class_name => MaintRecordx.equipment.to_s 
     
     validates_presence_of :equipment_id, :maint_instruction, :execution_date 

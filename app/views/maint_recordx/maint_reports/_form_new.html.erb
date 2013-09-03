@@ -13,8 +13,6 @@
   &nbsp;&nbsp;<%=t('List Replaced Parts:') %>
   <p><%= link_to_add_fields t('Add Replaced Part'), f, :replaced_parts %></p>
   <%= f.input :review, :label => t('Review'), :input_html => {:rows => 8}, :readonly => readonly?(@maint_report, 'review') %>
-  <%= f.input :reported_by_name, :label => t('Reported By'), :input_html => {:value => @maint_report.reported_by.name}, :readonly => true %>
-  <%= f.input :last_updated_by_name, :label => t('Last Updated By'), :input_html => {:value => @maint_request.last_updated_by.name}, :readonly => true %>
     
   <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
 <% end %> 

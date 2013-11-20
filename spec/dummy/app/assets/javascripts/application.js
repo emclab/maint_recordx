@@ -12,4 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
 //= require_tree .
+//= require authentify/application.js
+//= require commonx/application.js
+//= require maint_recordx/application.js

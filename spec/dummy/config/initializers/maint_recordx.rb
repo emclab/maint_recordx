@@ -1,1 +1,1 @@
-MaintRecordx.equipment = 'MachineToolx::MachineTool'
+MaintRecordx.equipment_class = 'MachineToolx::MachineTool'

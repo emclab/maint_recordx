@@ -45,7 +45,7 @@ module MaintRecordx
     def update
       @maint_request = MaintRecordx::MaintRequest.find_by_id(params[:id])
       @maint_request.last_updated_by_id = session[:user_id]
-      @equipment = MaintRecordx.equipment.find_by_id(@maint_request.equipment_id)
+      #@equipment = MaintRecordx.equipment.find_by_id(@maint_request.equipment_id)
       if @maint_request.update_attributes(params[:maint_request], :as => :role_update)
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
       else
@@ -64,6 +64,8 @@ module MaintRecordx
     
     def load_equipment
       @equipment = MaintRecordx.equipment.find_by_id(params[:equipment_id]) if params[:equipment_id].present?
+      #id is request.id
+      @equipment = MaintRecordx.equipment.find_by_id(MaintRecordx::MaintRequest.find_by_id(params[:id]).equipment_id) if  MaintRecordx::MaintRequest.find_by_id(params[:id]).present? && MaintRecordx::MaintRequest.find_by_id(params[:id]).equipment_id.present?
     end
   end
 end

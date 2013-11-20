@@ -1,5 +1,9 @@
+<% if false %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
 <div id='main_body'>
-<%#= render inline: ERB.new(@erb_code).result(binding) %>
+
 <h4><%=t('Equipment Maintanence Request Info')%> </h4>
 
 <p>
@@ -56,3 +60,5 @@
 	</table>
 	
 </div>
+
+<% end %>

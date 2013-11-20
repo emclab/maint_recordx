@@ -1,8 +1,12 @@
+<% if false %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
 <%= simple_form_for(@maint_request) do |f| %>    
-  <%#= render inline: ERB.new(@erb_code).result(binding) %>
+  
   <%= f.input :equipment_id, :readonly => true, :input_html => {:value => @equipment.id}, :as => :hidden %>
   <%= f.input :equipment_name, :label => t('Equipment Name'), :readonly => true, :input_html => {:value => @equipment.try(:name)}%>
-  <%= f.input :equipment_short_name, :label => t('Equipment Short Name'), :readonly => true, :input_html => {:value => @equipment.try(:short_name)}%> 
+  <%= f.input :model_num, :label => t('Model#'), :readonly => true, :input_html => {:value => @equipment.try(:model_num)}%> 
   <%= f.input :maint_type_id, :label => t('Maintanence Type'), :collection => Commonx::MiscDefinition.where('for_which = ? AND active = ?', 'equip_maintanence_type', true), 
               :label_method => :name, :value_method => :id, :include_blank => true  %>
   <%= f.input :maint_instruction, :label => t('Maint. Instruction'), :input_html => {:rows => 4} %>
@@ -11,6 +15,9 @@
   <%= f.input :estimated_execution_hour, :label => t('Estimated Execution Hour'), :placeholder => '24' %>
   <%= f.input :assigned_to_id, :label => t('Assignee'), :collection => Authentify::UsersHelper::return_users('create', 'maint_recordx_maint_records'), 
               :label_method => :name, :value_method => :id, :include_blank => true  %>
-    
+  
+  <%= link_to t('Cancel'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>  
   <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
 <% end %> 
+
+<% end %>

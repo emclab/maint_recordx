@@ -40,7 +40,7 @@ module MaintRecordx
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         equip = FactoryGirl.create(:machine_toolx_machine_tool)
-        equip1 = FactoryGirl.create(:machine_toolx_machine_tool, :short_name => 'new stuff', :serial_num => 'new serial')
+        equip1 = FactoryGirl.create(:machine_toolx_machine_tool, :name => 'new_name', :serial_num => 'new serial')
         sup = FactoryGirl.create(:maint_recordx_maint_request, :equipment_id => equip.id)
         sup1 = FactoryGirl.create(:maint_recordx_maint_request, :execution_date => 1.day.ago, :equipment_id => equip1.id)
         get 'index', {:use_route => :maint_recordx, :equipment_id => equip.id}

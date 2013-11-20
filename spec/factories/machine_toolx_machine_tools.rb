@@ -3,7 +3,7 @@
 FactoryGirl.define do
   factory :machine_toolx_machine_tool, :class => 'MachineToolx::MachineTool' do
     name "MyString"
-    short_name "MyString"
+    #short_name "MyString"
     purchase_date "2013-08-28"
     mfg_date "2013-08-28"
     model_num "MyString"

@@ -1,5 +1,8 @@
+<% if false %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
 <div id='main_body'>
-<%#= render inline: ERB.new(@erb_code).result(binding) %>
 <h4><%=t('Equipment Maintanence Request Info')%> </h4>
 
 <p>
@@ -72,3 +75,5 @@
 
 	<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action']%>
 </div>
+
+<% end %>

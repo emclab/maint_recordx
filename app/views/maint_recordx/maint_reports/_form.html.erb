@@ -1,20 +1,29 @@
+<% if false %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
 <%= simple_form_for(@maint_report) do |f| %>    
   
   <%#= render inline: ERB.new(@erb_code).result(binding) %>
   <%= f.input :maint_request_id, :label => t('Maint. Request#'), :readonly => true %>
   <%= f.input :equipment_name, :label => t('Equipment Name'), :readonly => true, :input_html => {:value => @maint_request.equipment.try(:name)}%>
-  <%= f.input :equipment_short_name, :label => t('Equipment Short Name'), :readonly => true, :input_html => {:value => @maint_request.equipment.try(:short_name)}%>
+  <%= f.input :model_num, :label => t('Model#'), :readonly => true, :input_html => {:value => @maint_request.equipment.try(:model_num)}%>
   <%= f.input :maint_type_name, :label => t('Maintanence Type'), :readonly => true, :input_html => {:value => @maint_request.maint_type.name} %>
   <%= f.input :problem, :label => t('Problem Description'), :input_html => {:rows => 6}, :readonly => readonly?(@maint_report, 'problem') %>
   <%= f.input :did, :label => t('Maint. Scope'), :input_html => {:rows => 8} %>
-  <%= f.input :start_datetime, :label => t('Start Datetime'), :as => :datetime, :ampm => true, :minute_step => 15, :include_blank => true  %>
-  <%= f.input :finish_datetime, :label => t('Finish Datetime'), :as => :datetime, :ampm => true, :minute_step => 15, :include_blank => true %>
+  <%= f.input :start_datetime, :label => t('Start Datetime'), :as => :datetime, :ampm => true, :minute_step => 10, :start_year => Date.today.year - 1,
+                               :end_year => Date.today.year + 1, :format => 'YYYY/MM/DD/HH/MM', :include_blank => true  %>
+  <%= f.input :finish_datetime, :label => t('Finish Datetime'), :as => :datetime, :ampm => true, :start_year => Date.today.year - 1,
+                               :end_year => Date.today.year + 1, :minute_step => 10, :include_blank => true %>
   <%= f.input :machine_down, :label => t('Machine Down?'), :collection => [[t('Yes'), true], [t('No'), false]] %>
   &nbsp;&nbsp;<%=t('List Replaced Parts:') %>
   <p><%= link_to_add_fields t('Add Replaced Part'), f, :replaced_parts %></p>
   <%= f.input :review, :label => t('Review'), :input_html => {:rows => 8}, :readonly => readonly?(@maint_report, 'review') %>
   <%= f.input :reported_by_name, :label => t('Reported By'), :input_html => {:value => @maint_report.reported_by.name}, :readonly => true %>
   <%= f.input :last_updated_by_name, :label => t('Last Updated By'), :input_html => {:value => @maint_request.last_updated_by.name}, :readonly => true %>
-    
+  
+  <%= link_to t('Cancel'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>  
   <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
 <% end %> 
+
+<% end %>

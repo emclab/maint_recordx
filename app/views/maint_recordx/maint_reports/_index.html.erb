@@ -1,12 +1,15 @@
-<%#= render inline: ERB.new(@erb_code).result(binding) %>
+<% if false %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
 <h1><%= t('Maintanence Reports')%></h1>
-<div class="byop_pagination"><%= will_paginate %></div>
+<div class="byop_pagination"><%= will_paginate models %></div>
 <table>
   <tr>
     <th></th>
     <th><%=t('Report Date')%></th> 
     <th><%=t('Equipment Name')%></th>
-    <th><%=t('Equipment Short Name')%></th>
+    <th><%=t('Model#')%></th>
     <th><%=t('Maintanence Type')%></th>
     <th><%=t('Maint. Start Date')%></th>
     <th><%=t('Maint. Finish Date')%></th>
@@ -17,7 +20,7 @@
  
   </tr>
 
-<% @maint_reports.each do |r| %>
+<% models.each do |r| %>
   <tr>
   	<% if has_action_right?('show', params[:controller], r) %>
   	  <td><%= link_to r.id.to_s, SUBURI + "/view_handler?index=1&url=#{maint_request_path(r)}"  %></td>
@@ -26,18 +29,19 @@
   	<% end %>
   	<td><%= MaintRecordx::MaintReport.find_by_id(r.id).created_at.strftime("%Y/%m/%d") if MaintRecordx::MaintReport.find_by_id(r.id).present? %></td>
     <td><%= MaintRecordx.equipment.find_by_id(r.maint_request.equipment_id).try(:name) %></td>
-    <td><%= MaintRecordx.equipment.find_by_id(r.maint_request.equipment_id).try(:short_name) %></td>
+    <td><%= MaintRecordx.equipment.find_by_id(r.maint_request.equipment_id).try(:model_num) %></td>
     <td><%= prt(r, 'maint_request.maint_type.name') %></td>
     <td><%= r.start_datetime.strftime("%Y/%m/%d/%l/%M/%p") unless r.start_datetime.nil? %></td>
     <td><%= r.finish_datetime.strftime("%Y/%m/%d/%l/%M/%p") unless r.finish_datetime.nil? %></td>
     <td><%= r.machine_down ? t('Yes') : t('No') %></td>
     <td><%= prt(r, 'reported_by.name') %></td>
     
-    <td><%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{edit_maint_report_path(r)}", :class => BUTTONS_CLS['action'] if has_action_right?('update', params[:controller], r) %></td>
+    <td><%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{CGI::escape(edit_maint_request_maint_report_path(r.maint_request, r, :parent_record_id => r.maint_request.id, :parent_resource => 'maint_recordx/maint_requests'))}", :class => BUTTONS_CLS['action'] if has_action_right?('update', params[:controller], r) %></td>
 
   </tr>
 <% end %>
 </table>
 
   <%= link_to t('Back'), SUBURI + "/view_handler?index=0",  :class => BUTTONS_CLS['action'] %>
-  
+ 
+<% end %>

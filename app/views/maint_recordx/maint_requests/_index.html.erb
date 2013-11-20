@@ -1,11 +1,14 @@
-<%#= render inline: ERB.new(@erb_code).result(binding) %>
+<% if false %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
 <h1><%= t('Maintanence Requests')%></h1>
-<div class="byop_pagination"><%= will_paginate %></div>
+<div class="byop_pagination"><%= will_paginate models %></div>
 <table>
   <tr>
     <th></th>
     <th><%=t('Equipment Name')%></th>
-    <th><%=t('Equipment Short Name')%></th>
+    <th><%=t('Model#')%></th>
     <th><%=t('Request Date')%></th>
     <th><%=t('Maintanence Type')%></th>
     <th><%=t('Maint. Instruction')%></th>
@@ -16,7 +19,7 @@
  
   </tr>
 
-<% @maint_requests.each do |r| %>
+<% models.each do |r| %>
   <tr>
   	<% if has_action_right?('show', params[:controller], r) %>
   	  <td><%= link_to r.id.to_s, SUBURI + "/view_handler?index=1&url=#{maint_request_path(r)}"  %></td>
@@ -24,13 +27,13 @@
   	  <td><%= r.id %></td>
   	<% end %>
     <td><%= MaintRecordx.equipment.find_by_id(r.equipment_id).try(:name) %></td>
-    <td><%= MaintRecordx.equipment.find_by_id(r.equipment_id).try(:short_name) %></td>
+    <td><%= MaintRecordx.equipment.find_by_id(r.equipment_id).try(:model_num) %></td>
     <td><%= r.created_at.strftime("%Y/%m/%d") %></td>
     <td><%= prt(r, 'maint_type.name') %></td>
     <td><%= prt(r, :maint_instruction) %></td>
     <td><%= r.execution_date.strftime("%Y/%m/%d") unless r.execution_date.nil? %></td>
     <td><%= prt(r, 'requested_by.name') %></td>
-    <td><%= MaintRecordx::MaintReport.find_by_id(r.id).first.created_at.strftime("%Y/%m/%d") if MaintRecordx::MaintReport.find_by_id(r.id).present? %></td>
+    <td><%= MaintRecordx::MaintReport.where(:maint_request_id => r.id).last.created_at.strftime("%Y/%m/%d") if MaintRecordx::MaintReport.where(:maint_request_id => r.id).present? %></td>
     <td><%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{edit_maint_request_path(r)}", :class => BUTTONS_CLS['action'] if has_action_right?('update', params[:controller], r) %></td>
 
   </tr>
@@ -38,4 +41,5 @@
 </table>
 
   <%= link_to t('Back'), SUBURI + "/view_handler?index=0",  :class => BUTTONS_CLS['action'] %>
-  
+ 
+<% end %> 

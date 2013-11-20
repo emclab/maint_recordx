@@ -30,7 +30,7 @@ module MaintRecordx
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         equip = FactoryGirl.create(:machine_toolx_machine_tool)
-        equip1 = FactoryGirl.create(:machine_toolx_machine_tool, :short_name => 'new stuff', :serial_num => 'new serial')
+        equip1 = FactoryGirl.create(:machine_toolx_machine_tool, :name => 'new_name', :serial_num => 'new serial')
         request = FactoryGirl.create(:maint_recordx_maint_request, :equipment_id => equip.id)
         request1 = FactoryGirl.create(:maint_recordx_maint_request, :maint_instruction => 'new serial', :equipment_id => equip1.id)
         sup = FactoryGirl.create(:maint_recordx_maint_report, :maint_request_id => request.id)
@@ -45,7 +45,7 @@ module MaintRecordx
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         equip = FactoryGirl.create(:machine_toolx_machine_tool)
-        equip1 = FactoryGirl.create(:machine_toolx_machine_tool, :short_name => 'new stuff', :serial_num => 'new serial')
+        equip1 = FactoryGirl.create(:machine_toolx_machine_tool, :name => 'new_name', :serial_num => 'new serial')
         request = FactoryGirl.create(:maint_recordx_maint_request, :equipment_id => equip.id)
         request1 = FactoryGirl.create(:maint_recordx_maint_request, :maint_instruction => 'new serial', :equipment_id => equip1.id)
         sup = FactoryGirl.create(:maint_recordx_maint_report, :maint_request_id => request.id)

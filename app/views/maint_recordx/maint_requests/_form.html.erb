@@ -2,6 +2,7 @@
   <%= render inline: ERB.new(@erb_code).result(binding) %>
   
 <% else %>
+<h4><%=t('Update Equipment Maintanence Request')%> </h4>
 <%= simple_form_for(@maint_request) do |f| %>    
   
   <%= f.input :equipment_id, :readonly => true, :input_html => {:value => @equipment.id}, :as => :hidden %>
@@ -14,12 +15,16 @@
               :label_method => :name, :value_method => :id  %>
   <% end %>
   <%= f.input :maint_instruction, :label => t('Maint. Instruction'), :input_html => {:rows => 4}, :readonly => readonly?(@maint_request, 'maint_instruction') %>
-  <%= f.input :other_requirement, :label => t('Other Requirement'), :input_html => {:rows => 4} %>
-  <%= f.input :execution_date, :label => t('Execution Date'), :as => :string %>
-  <%= f.input :estimated_execution_hour, :label => t('Estimated Execution Hour') %>
-  <%= f.input :cancelled, :label => t('Cancelled'),  :collection => [[t('Yes'), true], [t('No'), false]], :readonly => readonly?(@maint_request, 'cancelled') %>
-  <%= f.input :completed, :label => t('Completed'),  :collection => [[t('Yes'), true], [t('No'), false]], :readonly => readonly?(@maint_request, 'completed') %>
-  <%= f.input :assigned_to_id, :label => t('Assignee'), :collection => Authentify::UsersHelper::return_users('create', 'maint_recordx_maint_records'), :label_method => :name, :value_method => :id  %>
+  <%= f.input :other_requirement, :label => t('Other Requirement'), :input_html => {:rows => 4}, :readonly => readonly?(@maint_request, 'other_requirement') %>
+  <%= f.input :execution_date, :label => t('Execution Date'), :as => :string, :readonly => readonly?(@maint_request, 'execution_date') %>
+  <%= f.input :estimated_execution_hour, :label => t('Estimated Execution Hour'), :readonly => readonly?(@maint_request, 'estimated_execution_hour') %>
+  <%= f.input :cancelled, :label => t('Cancelled'),  :collection => [[t('Yes'), true], [t('No'), false]] unless readonly?(@maint_request, 'cancelled') %>
+  <%= f.input :cancelled_noupdate, :label => t('Cancelled'), :readonly => true, :input_html => {:value => (@maint_request.cancelled ? t('Yes') : t('No')) } if readonly?(@maint_request, 'cancelled') %>
+  <%= f.input :completed, :label => t('Completed'),  :collection => [[t('Yes'), true], [t('No'), false]] unless readonly?(@maint_request, 'completed') %>
+  <%= f.input :completed_noupdate, :label => t('Completed'), :readonly => true, :input_html => {:value => (@maint_request.completed ? t('Yes') : t('No')) } if readonly?(@maint_request, 'completed') %>
+  <%= f.input :assigned_to_id, :label => t('Assignee'), :collection => Authentify::UsersHelper::return_users('create', 'maint_recordx_maint_records'), :label_method => :name, 
+              :value_method => :id unless readonly?(@maint_request, 'assigned_to_id')  %>
+  <%= f.input :assigned_to_name, :label => t('Assignee'), :readonly => true, :input_html => {:value => @maint_request.assigned_to.name} if readonly?(@maint_request, 'assigned_to_id')  %>
   <%= f.input :requested_by_name, :label => t('Requested By'), :input_html => {:value => @maint_request.requested_by.name}, :readonly => true %>
   <%= f.input :last_updated_by_name, :label => t('Last Updated By'), :input_html => {:value => @maint_request.last_updated_by.name}, :readonly => true %>
   

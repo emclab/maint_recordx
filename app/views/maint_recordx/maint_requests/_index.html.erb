@@ -26,8 +26,8 @@
   	<% else %>
   	  <td><%= r.id %></td>
   	<% end %>
-    <td><%= MaintRecordx.equipment.find_by_id(r.equipment_id).try(:name) %></td>
-    <td><%= MaintRecordx.equipment.find_by_id(r.equipment_id).try(:model_num) %></td>
+    <td><%= MaintRecordx.equipment_class.find_by_id(r.equipment_id).try(:name) %></td>
+    <td><%= MaintRecordx.equipment_class.find_by_id(r.equipment_id).try(:model_num) %></td>
     <td><%= r.created_at.strftime("%Y/%m/%d") %></td>
     <td><%= prt(r, 'maint_type.name') %></td>
     <td><%= prt(r, :maint_instruction) %></td>

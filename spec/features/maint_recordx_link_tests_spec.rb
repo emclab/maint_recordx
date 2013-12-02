@@ -40,20 +40,22 @@ describe "LinkTests" do
            :sql_code => "")
       ua1 = FactoryGirl.create(:user_access, :action => 'update', :resource => 'maint_recordx_maint_requests', :role_definition_id => @role.id, :rank => 1,
            :sql_code => "")
+      
       ua1 = FactoryGirl.create(:user_access, :action => 'index', :resource => 'maint_recordx_maint_reports', :role_definition_id => @role.id, :rank => 1,
            :sql_code => "MaintRecordx::MaintReport.scoped")
       ua1 = FactoryGirl.create(:user_access, :action => 'create', :resource => 'maint_recordx_maint_reports', :role_definition_id => @role.id, :rank => 1,
            :sql_code => "")
       ua1 = FactoryGirl.create(:user_access, :action => 'update', :resource => 'maint_recordx_maint_reports', :role_definition_id => @role.id, :rank => 1,
            :sql_code => "")
-      @maint_type = FactoryGirl.create(:commonx_misc_definition, :for_which => 'equip_maintanence_type')
+           
+      @maint_type = FactoryGirl.create(:commonx_misc_definition, :for_which => 'equip_maintanence_type', :active => true)
       
            
       visit '/'
       ##save_and_open_page
       fill_in "login", :with => @u.login
-      fill_in "password", :with => 'password'
-      click_button 'login'
+      fill_in "password", :with => @u.password
+      click_button 'Login'
     end
         
     it "works!" do
@@ -63,12 +65,14 @@ describe "LinkTests" do
       req = FactoryGirl.create(:maint_recordx_maint_request, :equipment_id => equip.id)
       report = FactoryGirl.create(:maint_recordx_maint_report, :maint_request_id => req.id)
       visit maint_requests_path()
+      #save_and_open_page
       click_link('Edit')
       #save_and_open_page
       page.body.should have_content('Maintanence Type')
       visit maint_reports_path()
       #save_and_open_page
       click_link('Edit')
+      visit new_maint_request_path(:equipment_id => equip.id)
       #save_and_open_page
       #click_link('Add Replaced Part')
       #save_and_open_page

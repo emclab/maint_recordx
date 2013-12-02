@@ -79,7 +79,7 @@ module MaintRecordx
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         equip = FactoryGirl.create(:machine_toolx_machine_tool)
         sup = FactoryGirl.attributes_for(:maint_recordx_maint_request, :equipment_id => equip.id, :maint_instruction => nil)
-        get 'create', {:use_route => :maint_recordx, :maint_request => sup}
+        get 'create', {:use_route => :maint_recordx, :maint_request => sup, :equipment_id => equip.id}
         response.should render_template('new')
       end
     end

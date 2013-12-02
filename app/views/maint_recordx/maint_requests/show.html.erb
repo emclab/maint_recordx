@@ -67,7 +67,7 @@
 	    	<%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @maint_request.id, :resource_name => params[:controller], :subaction => 'maint_request',
     	     :format => :js), :remote => true, :id => 'new_log_link' , :class => BUTTONS_CLS['action'] if has_action_right?('create_maint_request', 'commonx/logs') %>
 	    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	    	<%= link_to t('New Mint. Report'), new_maint_request_maint_report_path(@maint_request), :id => 'btn1_link',
+	    	<%= link_to t('New Mint. Report'), SUBURI + "/view_handler?index=1&url=#{new_maint_request_maint_report_path(@maint_request)}", :id => 'btn1_link',
 	    	               :class => BUTTONS_CLS['action'] if has_action_right?('create', 'maint_recordx/maint_reports') %>
 	    </th>
 	  </tr>

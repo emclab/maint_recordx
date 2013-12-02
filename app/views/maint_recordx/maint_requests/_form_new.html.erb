@@ -2,9 +2,10 @@
   <%= render inline: ERB.new(@erb_code).result(binding) %>
   
 <% else %>
+<h4><%=t('New Equipment Maintanence Request')%> </h4>
 <%= simple_form_for(@maint_request) do |f| %>    
   
-  <%= f.input :equipment_id, :readonly => true, :input_html => {:value => @equipment.id}, :as => :hidden %>
+  <%= f.input :equipment_id, :as => :hidden, :input_html => {:value => @equipment.id} %>
   <%= f.input :equipment_name, :label => t('Equipment Name'), :readonly => true, :input_html => {:value => @equipment.try(:name)}%>
   <%= f.input :model_num, :label => t('Model#'), :readonly => true, :input_html => {:value => @equipment.try(:model_num)}%> 
   <%= f.input :maint_type_id, :label => t('Maintanence Type'), :collection => Commonx::MiscDefinition.where('for_which = ? AND active = ?', 'equip_maintanence_type', true), 

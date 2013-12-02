@@ -28,8 +28,8 @@
   	  <td><%= r.id %></td>
   	<% end %>
   	<td><%= MaintRecordx::MaintReport.find_by_id(r.id).created_at.strftime("%Y/%m/%d") if MaintRecordx::MaintReport.find_by_id(r.id).present? %></td>
-    <td><%= MaintRecordx.equipment.find_by_id(r.maint_request.equipment_id).try(:name) %></td>
-    <td><%= MaintRecordx.equipment.find_by_id(r.maint_request.equipment_id).try(:model_num) %></td>
+    <td><%= MaintRecordx.equipment_class.find_by_id(r.maint_request.equipment_id).try(:name) %></td>
+    <td><%= MaintRecordx.equipment_class.find_by_id(r.maint_request.equipment_id).try(:model_num) %></td>
     <td><%= prt(r, 'maint_request.maint_type.name') %></td>
     <td><%= r.start_datetime.strftime("%Y/%m/%d/%l/%M/%p") unless r.start_datetime.nil? %></td>
     <td><%= r.finish_datetime.strftime("%Y/%m/%d/%l/%M/%p") unless r.finish_datetime.nil? %></td>

@@ -2,19 +2,19 @@
   <%= render inline: ERB.new(@erb_code).result(binding) %>
   
 <% else %>
-<%= simple_form_for(@maint_report) do |f| %>    
+<h4><%=t('New Equipment Maintanence Report')%> </h4>
+<%= simple_form_for([@maint_request, @maint_report]) do |f| %>    
   
-  <%#= render inline: ERB.new(@erb_code).result(binding) %>
   <%= f.input :maint_request_id, :label => t('Maint. Request#'), :readonly => true %>
-  <%= f.input :equipment_name, :label => t('Equipment Name'), :readonly => true, :input_html => {:value => @maint_request.equipment.try(:name)}%>
-  <%= f.input :model_num, :label => t('Model#'), :readonly => true, :input_html => {:value => @maint_request.equipment.try(:model_num)}%>
+  <%= f.input :equipment_name, :label => t('Equipment Name'), :readonly => true, :input_html => {:value => @equipment.try(:name)}%>
+  <%= f.input :model_num, :label => t('Model#'), :readonly => true, :input_html => {:value => @equipment.try(:model_num)}%>
   <%= f.input :maint_type_name, :label => t('Maintanence Type'), :readonly => true, :input_html => {:value => @maint_request.maint_type.name} %>
   <%= f.input :problem, :label => t('Problem Description'), :input_html => {:rows => 6}, :readonly => readonly?(@maint_report, 'problem') %>
   <%= f.input :did, :label => t('Maintanence Work'), :input_html => {:rows => 8} %>
   <%= f.input :start_datetime, :label => t('Start Datetime'), :as => :datetime, :ampm => true, :minute_step => 10, :start_year => Date.today.year - 1,
-                               :end_year => Date.today.year + 1, :format => 'YYYY/MM/DD/HH/MM', :include_blank => true  %>
+                               :end_year => Date.today.year + 1, :format => 'YYYY/MM/DD/HH/MM', :use_month_numbers => true, :include_blank => true  %>
   <%= f.input :finish_datetime, :label => t('Finish Datetime'), :as => :datetime, :ampm => true, :minute_step => 10, :start_year => Date.today.year - 1,
-                               :end_year => Date.today.year + 1, :include_blank => true %>
+                               :end_year => Date.today.year + 1, :use_month_numbers => true, :include_blank => true %>
   <%= f.input :machine_down, :label => t('Machine Down?'), :collection => [[t('Yes'), true], [t('No'), false]] %>
   &nbsp;&nbsp;<%=t('List Replaced Parts:') %>
   <p><%= link_to_add_fields t('Add Replaced Part'), f, :replaced_parts %></p>

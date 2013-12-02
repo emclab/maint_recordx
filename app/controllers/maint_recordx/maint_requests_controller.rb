@@ -9,23 +9,20 @@ module MaintRecordx
     
     def index
       @title = t('Maintanence Requests')
-      if @equipment
-        @maint_requests = MaintRequest.where(:cancelled => false).where('equipment_id = ?', @equipment.id).page(params[:page]).per_page(@max_pagination)
-      else
-        @maint_requests = params[:maint_recordx_maint_requests][:model_ar_r].page(params[:page]).per_page(@max_pagination)
-      end
-      @erb_code = find_config_const('maint_request_index_view', 'maint_recordx_maint_requests')
+      @maint_requests = params[:maint_recordx_maint_requests][:model_ar_r]
+      @maint_requests = @maint_requests.where('equipment_id = ?', @equipment.id) if @equipment
+      @maint_requests = @maint_requests.page(params[:page]).per_page(@max_pagination)
+      @erb_code = find_config_const('maint_request_index_view', 'maint_recordx')
     end
   
     def new
       @title = t('New Maintanence Request')
       @maint_request = MaintRecordx::MaintRequest.new()
-      @erb_code = find_config_const('maint_request_new_view', 'maint_recordx_maint_requests')
+      @erb_code = find_config_const('maint_request_new_view', 'maint_recordx')
     end
   
     def create
       @maint_request = MaintRecordx::MaintRequest.new(params[:maint_request], :as => :role_new)
-      @equipment = MaintRecordx.equipment.find_by_id(params[:maint_request][:equipment_id].to_i)
       @maint_request.last_updated_by_id = session[:user_id]
       @maint_request.requested_by_id = session[:user_id]
       if @maint_request.save
@@ -39,7 +36,7 @@ module MaintRecordx
     def edit
       @title = t('Update Maintanence Request')
       @maint_request = MaintRecordx::MaintRequest.find_by_id(params[:id])
-      @erb_code = find_config_const('maint_request_edit_view', 'maint_recordx_maint_requests')
+      @erb_code = find_config_const('maint_request_edit_view', 'maint_recordx')
     end
   
     def update
@@ -57,15 +54,14 @@ module MaintRecordx
     def show
       @title = t('Show Maintanence Request')
       @maint_request = MaintRecordx::MaintRequest.find_by_id(params[:id])
-      @erb_code = find_config_const('maint_request_show_view', 'maint_recordx_maint_requests')
+      @erb_code = find_config_const('maint_request_show_view', 'maint_recordx')
     end
     
     protected
     
     def load_equipment
-      @equipment = MaintRecordx.equipment.find_by_id(params[:equipment_id]) if params[:equipment_id].present?
-      #id is request.id
-      @equipment = MaintRecordx.equipment.find_by_id(MaintRecordx::MaintRequest.find_by_id(params[:id]).equipment_id) if  MaintRecordx::MaintRequest.find_by_id(params[:id]).present? && MaintRecordx::MaintRequest.find_by_id(params[:id]).equipment_id.present?
+      @equipment = MaintRecordx.equipment_class.find_by_id(params[:equipment_id]) if params[:equipment_id].present?
+      @equipment = MaintRecordx.equipment_class.find_by_id(MaintRecordx::MaintRequest.find_by_id(params[:id]).equipment_id) if  params[:id].present? 
     end
   end
 end

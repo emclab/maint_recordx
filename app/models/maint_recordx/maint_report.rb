@@ -13,6 +13,7 @@ module MaintRecordx
     
     accepts_nested_attributes_for :replaced_parts, :allow_destroy => true
     
-    validates_presence_of :maint_request_id, :did, :problem, :start_datetime, :finish_datetime
+    validates :did, :problem, :start_datetime, :finish_datetime, :presence => true
+    validates :maint_request_id, :presence => true, :numericality => {:greater_than => 0}
   end
 end

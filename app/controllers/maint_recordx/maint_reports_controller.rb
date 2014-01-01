@@ -26,6 +26,8 @@ module MaintRecordx
       if @maint_report.save
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
       else
+        @maint_request = MaintRecordx::MaintRequest.find_by_id(params[:maint_report][:maint_request_id]) if params[:maint_report].present? && params[:maint_report][:maint_request_id].present?      
+        @equipment = MaintRecordx.equipment_class.find_by_id(@maint_request.equipment_id) if @maint_request
         flash[:notice] = t('Data Error. Not Saved!')
         render 'new'
       end

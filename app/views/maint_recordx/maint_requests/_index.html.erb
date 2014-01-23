@@ -4,7 +4,7 @@
 <% else %>
 <h1><%= t('Maintanence Requests')%></h1>
 <div class="byop_pagination"><%= will_paginate models %></div>
-<table>
+<table class="table table-striped">
   <tr>
     <th></th>
     <th><%=t('Equipment Name')%></th>
@@ -39,7 +39,12 @@
   </tr>
 <% end %>
 </table>
-
-  <%= link_to t('Back'), SUBURI + "/view_handler?index=0",  :class => BUTTONS_CLS['action'] %>
+	<table class="table table-striped">
+	  <tr>
+	    <th>
+  			<%= link_to t('Back'), SUBURI + "/view_handler?index=0",  :class => BUTTONS_CLS['action'] %>
+        </th>
+	  </tr>
+	</table>
  
 <% end %> 

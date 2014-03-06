@@ -1,5 +1,5 @@
 <% if @view_from_config && @erb_code %>
-  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  <%= render inline: @erb_code %>
   
 <% else %>
 <h4><%=t('New Equipment Maintanence Report')%> </h4>

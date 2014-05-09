@@ -28,6 +28,7 @@ module MaintRecordx
       else
         @maint_request = MaintRecordx::MaintRequest.find_by_id(params[:maint_report][:maint_request_id]) if params[:maint_report].present? && params[:maint_report][:maint_request_id].present?      
         @equipment = MaintRecordx.equipment_class.find_by_id(@maint_request.equipment_id) if @maint_request
+        @erb_code = find_config_const('maint_report_new_view', 'maint_recordx')
         flash[:notice] = t('Data Error. Not Saved!')
         render 'new'
       end
@@ -45,6 +46,7 @@ module MaintRecordx
       if @maint_report.update_attributes(params[:maint_report], :as => :role_update)
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
       else
+        @erb_code = find_config_const('maint_report_edit_view', 'maint_recordx')
         flash[:notice] = t('Data Error. Not Updated!')
         render 'edit'
       end

@@ -5,18 +5,18 @@ MaintRecordx::Engine.routes.draw do
     resources :maint_reports
     collection do
       get :search
-      put :search_results      
+      get :search_results      
       get :stats
-      put :stats_results
+      get :stats_results
     end      
   end 
   resources :maint_reports do
     resources :replaced_parts
     collection do
       get :search
-      put :search_results      
+      get :search_results      
       get :stats
-      put :stats_results
+      get :stats_results
     end      
   end 
   
